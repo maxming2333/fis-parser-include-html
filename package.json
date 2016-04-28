@@ -1,6 +1,6 @@
 {
   "name": "fis-parser-include-html",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "a parser plugin for fis to compile html",
   "main": "index.js",
   "scripts": {
@@ -19,5 +19,19 @@
       "email": "maxming2333@gmail.com"
     }
   ],
-  "directories": {}
+  "directories": {},
+  "homepage": "https://github.com/maxming2333/fis-parser-include-html",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:maxming2333/fis-parser-include-html.git",
+    "web": "https://github.com/maxming2333/fis-parser-include-html"
+  },
+  "bugs": {
+    "url": "https://github.com/maxming2333/fis-parser-include-html/issues",
+    "email": "maxming2333@gmail.com"
+  },
+  "engines": {
+    "node": ">= 1.0.0"
+  },
+  "author": "maxming <maxming2333@gmail.com> (http://maxming.com)"
 }

@@ -1,0 +1,23 @@
+{
+  "name": "fis-parser-include-html",
+  "version": "0.0.1",
+  "description": "a parser plugin for fis to compile html",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "fis",
+    "include",
+    "include-html"
+  ],
+  "dependencies": {},
+  "license": "MIT",
+  "maintainers": [
+    {
+      "name": "maxming",
+      "email": "maxming2333@gmail.com"
+    }
+  ],
+  "directories": {}
+}

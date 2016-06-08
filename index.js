@@ -20,8 +20,12 @@ module.exports = function (content, file, options) {
   function replaceFile(_reg, _fatDir, _file) {
     return (_file ? _file : content).replace(_reg, function (ret, src) {
       var srcAr = [];
-      for (var i = 0; i < options.root.length; i++) {
-        srcAr.push(fis.project.getProjectPath() + "/" + options.root[i] + src);
+      if(options.root instanceof Array){
+        for (var i = 0; i < options.root.length; i++) {
+          srcAr.push(fis.project.getProjectPath() + "/" + options.root[i] + src);
+        }
+      }else{
+        srcAr.push(fis.project.getProjectPath() + src);
       }
       _file ? srcAr.push(_fatDir + src) : srcAr.push(_fatDir + src);
 

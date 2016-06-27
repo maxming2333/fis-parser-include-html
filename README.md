@@ -5,6 +5,18 @@ a parser plugin for fis to compile html file
 
 ## usage
 
+**支持格式**
+
+```
+<!--{include file="../../common/nav.html"}-->
+<!--{include file="../../common/nav.html"/}-->
+<!--{include "../../common/nav.html"}-->
+<!--{include ../../common/nav.html}-->
+<!--{include common/nav.html}-->
+<!--{include file="common/nav.html"}-->
+...
+```
+
 **install**
 
 ```bash
@@ -18,7 +30,6 @@ npm install fis-parser-include-html
     rExt: '.html',
     parser: fis.plugin('include-html', {
       root: ["src/html/", "src/"], // 引用文件的目录前缀
-      hook: "file", // 用于引用表达式滴开始
       start: "#{", // 引用开始标记
       end: "/}" // 引用结束标记
     })

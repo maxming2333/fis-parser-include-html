@@ -3,35 +3,45 @@
 var path = require("path");
 
 module.exports = function (content, file, options) {
+  var start = options.start || '<!--{';
+  var end = options.end || '}-->';
+  var reg = eval("/" + start + "include(.+)" + end + "/ig");
 
-  function findFile(_src, _reg, _fatDir) {
+  function findFile(_src, _fatDir) {
     if (fis.util.isFile(_src)) {
       var tpl = fis.file.wrap(_src);
 
-      if (_reg.test(tpl.getContent())) {
-        return replaceFile(_reg, path.dirname(path.dirname(_src)) + "/", tpl.getContent());
+      if (reg.test(tpl.getContent())) {
+        return replaceFile(path.dirname(path.dirname(_src)) + "/", tpl.getContent());
       } else {
-        return tpl.getContent() + "\r\n<!-- include[ " + _src + " ] -->";
+        return tpl.getContent() + "\r\n<!--include[ " + _src + " ]-->";
       }
     }
     return false;
   }
 
-  function replaceFile(_reg, _fatDir, _file) {
-    return (_file ? _file : content).replace(_reg, function (ret, src) {
+  function replaceFile(_fatDir, _file) {
+    return (_file ? _file : content).replace(reg, function (match, p1, offset, string) {
+      var p = p1.replace(/.+["'](.*)["']/ig, '$1');
+      p = (p == p1) ? p1.replace(/\s+(.*)/ig, '$1') : p;
+
+      if(p == p1){
+        throw new Error("can't parsing this include grammar \'" + p1 + "\'");
+      }
+
       var srcAr = [];
+      srcAr.push(_fatDir + p)
       if(options.root instanceof Array){
         for (var i = 0; i < options.root.length; i++) {
-          srcAr.push(fis.project.getProjectPath() + "/" + options.root[i] + src);
+          srcAr.push(fis.project.getProjectPath() + "/" + options.root[i] + p);
         }
       }else{
-        srcAr.push(fis.project.getProjectPath() + src);
+        srcAr.push(fis.project.getProjectPath() + p);
       }
-      _file ? srcAr.push(_fatDir + src) : srcAr.push(_fatDir + src);
 
       var ret = false;
       for (var ii = 0; ii < srcAr.length; ii++) {
-        ret = findFile(srcAr[ii], _reg, _fatDir);
+        ret = findFile(srcAr[ii], _fatDir);
         if (ret) {
           break;
         }
@@ -51,12 +61,11 @@ module.exports = function (content, file, options) {
       options[i] = options[i].replace(/\\/ig, "\\\\").replace(/\//ig, "\\\/");
     }
   }
-  var fatDir = path.dirname(path.dirname(options.filename)) + "/";
 
-  var fileReg = eval("/" + options.start + ".+" + options.hook + "=\"(.*)\".+" + options.end + "/ig");
+  var fatDir = path.dirname(options.filename) + "/";
 
   if (file.isHtmlLike) {
-    return replaceFile(fileReg, fatDir);
+    return replaceFile(fatDir, content);
   }
   return content;
 };
